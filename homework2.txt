@@ -1,0 +1,311 @@
+Client-Server
+------------
+
+1. Tell us about the features of client/server
+
+-It works with a system of request and response. 
+-The client sends a request to the server and the server responds with the desired information.
+-The client and server should follow a common communication protocol so they can easily interact with each other. 
+-All the communication protocols are available at the application layer.
+-A server can only accommodate a limited number of client requests at a time. 
+-So it uses a system based to priority to respond to the requests.
+-Denial of Service attacks hindera servers ability to respond to authentic client requests by inundating it with false requests.
+-An example of a client server computing system is a web server. 
+-It returns the web pages to the clients that requested them.
+
+
+2. What is a Web server in a client server?
+
+-A web server is an Internet server that responds to HTTP requests for delivering content and services.
+-It is a program that uses HTTP for serving files that create web pages for users in response to their requests that are sent by the HTTP clients.
+-It web servers has a unique address that comprises of a series of four numbers between 0 and 255 seperated by period(.) 
+-When client sends request for a web page, the web server search for the requested page. 
+-If requested page is found then it will send it to client with an HTTP response : Error 404 Not found.
+eg :  Apache, IIS, NGINX, GWS
+
+
+3. What is the role of the presentation layer?
+
+-The presentation tier is the front end layer in the 3-tier system and consists of the user interface.
+-It is often a graphical one accessible through a web browser or web-based application.
+-It takes care that the data is sent in such a way that the receiver will understand the information and will be able to use the data.
+-Languages(syntax) can be different of the two communicating systems.
+-Under this condition presentation layer plays a role translator.
+-There are many functions of a presentation layer:
+  ->Its use for encryption and decryption of character code, for maintain reliable communication.
+  ->Its use for compression and decompression of the file size.
+  ->Its responsible for checking format of data.
+  ->It deal with the user interface.
+  ->It also encapsulates other components used to enhance the interface.
+
+
+4. They say this architecture is secure, how is it done in your opinion?
+
+-The Presentation layer is responsibility for several tasks.
+-Data Formatting is the first duty of this layer.
+-The second task of the Presentation layer is to encrypt data packets.
+-One of the main features of the Presentation layer is providing services that help build a relatively secure network. 
+-When a data is simply converted to a signal, it’s prone to be sniffed.
+-It adds two functionality to the OSI layer which adds a security level on top of the lower layers:
+  Encryption:
+	->The system must be able to assure privacy regarding the message or information as it also carries sensitive information.
+	->This layer has the ability to scramble the data.
+	->The data is ecrypted so that only authorized participants can decode the messages. 
+  Authentication:
+	->This step is to verify whether the remote party is really the party they claim to be, rather than an impostor.
+	->If the authenticity of the sender is approved on this layer, the packet has the permission to pass over into the Application layer for further processing.
+
+
+5. What is a Database Server in a client server environment?
+
+-Database Layer is the layer that stores data with the retrieval storage and execution methods made by the application layer. 
+-It contains methods that connect to the database and performs the required actions needed.
+-These are Insert, update or delete. 
+-data layer would normally comprise of one or more relational databases, big data sources, or other types of database systems hosted either on-premises or in the cloud.
+-Popular database systems for managing read/write access include MySQL, PostgreSQL, Microsoft SQL Server and MongoDB.
+
+
+6. What are Super servers in client server environments?
+
+-Typically, a superserver is programmed to start other servers as necessary. 
+-Using protocols like TCP and UDP, the superserver spawns processes and delegates sockets to set up operations for servers that are rarely used
+  eg: daemon in linux
+
+
+7. Explain 2-Tier and 3-Tier architecture
+
+Two Tier Architecture:
+  -The two-tier is based on Client Server architecture. 
+  -The two-tier architecture is like client server application. 
+  -The direct communication takes place between client and server. 
+  -There is no intermediate between client and server. 
+  -Because of tight coupling a 2 tiered application will run faster.
+  -The Two-tier architecture is divided into two parts:
+	1.Client Application (Client Tier)
+	2. Database (Data Tier)
+
+Three-Tier Architecture:
+  -Itcomprise a presentation tier, a business or data access tier, and a data tier. 
+  -Three layers in the three tier architecture are as follows:
+	1) Client layer
+	  ->It is also called as Presentation layer which contains UI part of our application. 
+	  ->This layer is used for the design purpose where data is presented to the user or input is taken from the user. 
+	  ->For example designing registration form which contains text box, label, button etc.
+	2) Business layer
+	  ->In this layer all business logic written like validation of data, calculations, data insertion etc. 
+	  ->This acts as a interface between Client layer and Data Access Layer. 
+	  ->This layer is also called the intermediary layer helps to make communication faster between client and data layer.
+	3) Data layer
+	  ->In this layer actual database is comes in the picture. 
+	  ->Data Access Layer contains methods to connect with database and to perform insert, update, delete, get data from database based on our input data.
+
+
+8. What is a File server?
+
+-In the client/server model, a file server is a computer responsible for the central storage and management of data files so that other computers on the same network can access the files.
+-A file server allows users to share information over a network without having to physically transfer files by storage device.
+-Any computer can be configured to be a host and act as a file server.
+-All modern operating systems such as Windows, Linux, or macOS can be used on a file server, although the devices available in the network need to be compatible with the operating system.
+-File servers are also often used as a repository for programs that have to be accessible to multiple network participants, and as a backup server.
+
+
+SOA & MicroServices
+------------------
+
+
+1. What are the main benefits of SOA?
+
+-a service oriented architecture is paradigm which include service as a layer 
+-The primary goal of Service Oriented Architecture is to align business users with IT.
+-It enables increased business agility, improved business workflows, extensible architecture, enhanced reuse, and a longer life span of applications.
+-Some of the benefits of SOA are :
+  ->Loosely coupling
+	-It avoides or at least encapsulates temporal, technological and organizational constraints in the information system design.
+	-The only interaction between the application and services is through the publish interfaces. 
+	-This means application doesn’t interested how the services been implemented.
+  ->Location transparency
+	-means that the consumer of the service doesn’t care where the implementation of the services resides. 	
+	-It could be same server or other server across the internet. 
+	-Consumer calls are agnostic to service location.
+  ->Reusability
+	-SOA compliance to web services and hence applications running on either platform can also consume services running on the other as web services that facilitate reuse. 
+	-Properly designed implemented SOA application provide infrastructure that makes reuse possibilities in heterogeneous environment such as C,C++,Java, .Net etc.
+  ->Rich Testability
+	-There are different testing areas such as services, security, and governance etc. 
+	-These testing areas would be tested separately using best tools and approach.
+	-For reference JUnit or NUnit allows for creation of a test suite. 
+	-It consists of number of procedure, each of which is designed to test a service or component.
+  ->Parallel Development
+	-SOA advocate more parallelism in development environment as SOA is based on layers based architecture.
+	-Developers could develop independent services in parallel and services will be completed on the same schedule time. 
+	-Business processes will be accessing the independent services orchestrate them and provide the concrete business functionality.
+  ->Higher Availability & Better Scalability
+	-SOA a Multi-layered architecture can be individually clustered with appropriate load balancing to scale up the system.
+  
+
+2. How can you achieve loose coupling in SOA
+
+-To achieve loose coupling you can use service interface like WSDL for a SOAP web service. 
+-To limit the dependency, you can hide the service implementation from the consumer. 
+-Loose coupling can be handled by encapsulating different functionalities in a way in which it will limit the impact of changes to the implementation of different service interfaces. 
+
+
+3. Are web services and SOA the same?
+
+-SOA and web services are two different things, but web services are the preferred standards-based way to realize SOA.
+-Web services are software systems designed to support interoperable machine-to-machine interaction over a network.
+-This interoperability is gained through a set of XML-based open standards, such as WSDL, SOAP, and UDDI.
+-An SOA architecture is characterized of composition of independent services which encapsulate business functionality and expose it as a service, which can be  a web service, a windows service,  or any other form of exposure.
+
+
+4. What is a reusable service?
+
+-Service reusability is typically measured by how much extra functionality a service contains that could be reused in future, 
+-and how much of the service's functionality goes beyond the current requirements.
+-The resulting SOA would not be able to provide true service reusability as promised.
+
+
+5. What are the disadvantages of SOA?
+
+-Extra overload:
+  ->n SOA, all inputs are validated before it is sent to the service. 
+  ->If you are using multiple services then it will overload your system with extra computation.
+-High cost:
+  ->SOA is costly in terms of human resource, development, and technology.
+-High bandwidth server:
+  ->As some web service sends and receives messages and information frequently so it easily reaches a million requests per day. 
+  ->So it involves a high-speed server with a lot of data bandwidth to run a web service.
+
+
+6. What is ESB and where does it fit in?
+
+-it is an architecture
+-used for integrating numerous applications together over a bus-like infrastructure.
+-different applications are integrated by putting a communication bus between them and then enable each application to talk to the bus.
+-SOA works on the principles of ESB
+
+
+7. In SOA do we need to build a system from scratch?
+
+-No, if we need to integrate any existing system you just can loosely couple wrappers which help in wrapping all customer services and expose all functionalities in a generic manner.
+
+
+8. What is the most important skill needed to adopt SOA ?technical or cultural?
+
+-Surely cultural. 
+-SOA does require people to think of business and technology differently. 
+-Instead of thinking of technology first, practitioners must first think in terms of business functions, or services.
+It is expected that adoption of SOA will change business IT departments, creating service-oriented IT organizations.
+
+
+
+9. List down the advantages of Microservices Architecture.
+
+-Microservice architecture gives developers the freedom to independently develop and deploy services.
+-A microservice can be developed by a fairly small team
+-Code for different services can be written in different languages
+-When change is required in a certain part of the application, only the related service can be modified and redeployed—no need to modify and redeploy the entire application
+-Better fault isolation: if one microservice fails, the other will continue to work (although one problematic area of a monolith application can jeopardize the entire system)
+-Easy to scale and integrate with third-party services
+-No long-term commitment to technology stack
+
+
+10. What are the best practices to design Microservices?
+
+The best practices to design microservices are:
+-Seperate data store for each Microservice
+-Keep code at a similiar level of maturity
+-Seperate build for each Microservice
+-Deploy into containeras
+-Treat servers as stateless
+
+
+11. How does Microservice Architecture work?
+
+-Different clients from different devices try to use different services like search, build, configure and other management capabilities
+-All the services are separated based on their domains and functionalities and  are further allotted to individual microservices
+-These microservices have their own load balancer and execution environment to execute their functionalities & at the same time captures data in their own databases
+-All the microservices communicate with each other through a stateless server which is either REST or Message Bus
+-Microservices know their path of communication with the help of Service Discovery and perform operational capabilities such as automation, monitoring
+-Then all the functionalities performed by microservices are communicated to clients via API Gateway
+-All the internal points are connected from the API Gateway. So, anybody who connects to the API Gateway automatically gets connected to the complete system
+
+
+12. What are the pros and cons of Microservice Architecture?
+
+Pros:
+-Microservice architecture gives developers the freedom to independently develop and deploy services.
+-A microservice can be developed by a fairly small team
+-Code for different services can be written in different languages
+-When change is required in a certain part of the application, only the related service can be modified and redeployed—no need to modify and redeploy the entire application
+-Better fault isolation: if one microservice fails, the other will continue to work (although one problematic area of a monolith application can jeopardize the entire system)
+-Easy to scale and integrate with third-party services
+-No long-term commitment to technology stack
+
+Cons:
+-Due to distributed deployment, testing can become complicated and tedious
+-Increasing number of services can result in information barriers
+-Being a distributed system, it can result in duplication of effort
+-When number of services increases, integration and managing whole products can become complicated
+-Developers have to put additional effort into implementing the mechanism of communication between the services
+
+
+13. What is the difference between Monolithic, SOA and Microservices Architecture?
+
+Monolithic:
+-A monolithic architecture is the traditional unified model for the design of a software program.
+-It means composed all in one piece.
+- Monolithic software is designed to be self-contained; components of the program are interconnected and interdependent rather than loosely coupled as is the case with modular software programs. 
+-In a tightly-coupled architecture, each component and its associated components must be present in order for code to be executed or compiled.
+
+SOA:
+-Service-Oriented Architecture (SOA) is an architectural approach in which applications make use of services available in the network. 
+-In this architecture, services are provided to form applications, through a communication call over the internet.
+
+Microservices Architecture:
+-Microservices are modular as possible. 
+-In the simplest form, they help build an application as a suite of small services, each running in its own process and are independently deployable. 
+-These services may be written in different programming languages and may use different data storage techniques
+
+
+14-->What are the challenges you face while working Microservice Architectures?
+
+Challenges in microservice architecture are :
+
+Inflexible 
+  – Monolithic applications cannot be built using different technologies 
+
+Unreliable 
+  – Even if one feature of the system does not work, then the entire system does not work
+
+Unscalable 
+  – Applications cannot be scaled easily since each time the application needs to be updated, the complete system has to be rebuilt
+
+Blocks Continous Development 
+  – Many features of the applications cannot be built and deployed at the same time
+
+Slow Development 
+  – Development in monolithic applications take lot of time to be built since each and every feature has to be built one after the other
+
+Not Fit For Complex Applications 
+  – Features of complex applications have tightly coupled dependencies
+
+
+15-->What are the characteristics of Microservices?
+
+Loose coupling: 
+-Microservices are independent and loosely coupled. 
+-In most cases, microservices accept an event as input and respond with another event. 
+-Messaging, HTTP, and REST are commonly used for interaction between microservices. 
+-Message-based endpoints provide higher levels of decoupling.
+
+Service reuse: 
+-Microservices are course-grained reusable business services. 
+-These are accessed by mobile devices and desktop channels, other microservices, or even other systems.
+
+Statelessness: 
+-Well-designed microservices are stateless and share nothing with no shared state or conversational state maintained by the services. 
+-In case there is a requirement to maintain state, they are maintained in a database, perhaps in memory.
+
+Service abstraction: 
+-In microservices, service abstraction is not just an abstraction of service realization, but it also provides a complete abstraction of all libraries and environment details, as discussed earlier.
