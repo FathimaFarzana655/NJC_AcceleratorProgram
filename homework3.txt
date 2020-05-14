@@ -1,0 +1,418 @@
+
+HTML Fundamentals
+----------------
+ 
+1.What are the basic Features of HTTP?
+
+There are three fundamental features that make the HTTP a simple and powerful protocol used for communication:
+
+HTTP is media independent: 
+ -It specifies that any type of media content can be sent by HTTP as long as both the server and the client can handle the data content.
+HTTP is connectionless: 
+ -It is a connectionless approach in which HTTP client 
+ -i.e., a browser initiates the HTTP request and after the request is sent the client disconnects from server and waits for the response.
+HTTP is stateless: 
+ -The client and server are aware of each other during a current request only. Afterwards, both of them forget each other. 
+ -Due to the stateless nature of protocol, neither the client nor the server can retain the information about different request across the web pages.
+
+
+2.What are request methods in HTTP?
+
+GET
+POST
+PUT
+PATCH
+DELETE
+
+
+3.What are the differences between GET and POST methods?
+
+-GET method places the parameters inside the URI while POST method appends the parameters into the body.
+-GET is essentially used for fetching the information. As against, the purpose of POST method is to update the data.
+-POST query results cannot be bookmarked whereas GET query results can be bookmarked because it exists in the form of URL.
+-In GET method the information is visible in the URL which increases vulnerabilities and the risk of hacking. In contrast, the POST method does not show variable in URL and multiple encoding techniques can also be used in it, which make it resilient.
+-When GET method is used in the form, only ASCII characters are accepted in data types. On the contrary, POST method does not bind form data types and permit binary as well as ASCII characters.
+-The variable size in GET method is approx 2000 characters. Inversely, POST method allows up to 8 Mb variable size.
+-GET method data is cacheable while data of POST method is not.
+
+
+4.What is status code in HTTP?
+
+200 - OK
+201 - Success
+400 - Bad request
+401 - Unauthorized
+404 - Notfound
+500 - Server error
+
+
+5.What are the header fields in HTTP?
+
+- General Header: This type of headers applied on Request and Response headers both but with out affecting the database body.
+- Request Header: This type of headers contains information about the fetched request by the client.
+- Response Header: This type of headers contains the location of the source that has been requested by the client.
+- Entity Header: This type of headers contains the information about the body of the resources like MIME type, Content-length.
+
+
+6.What is URI?
+
+-URI - Uniform Resource Identifier
+-It is a string of characters that identifies a resource on the web either by using location, name or both.
+-It allows uniform identification of the resources.
+-URIs provide a standard way for resources to be accessed by other computers across a network or over the WWW.
+
+
+7.What are Idempotent methods and why do we call them?
+
+-An operation is idempotent, clients can make that same call repeatedly while producing the same result.
+-Some examples of idempotent HTTP methods are GET, PUT, and PATCH.
+-e.g. data of a Book
+
+
+8.Explain HTTP Request & Response Messages ?
+
+HTTP Request :
+
+Request-Line: 
+  The Request-Line begins with a method token, followed by the Request-URI and the protocol version, and ending with CRLF.
+Request Method:
+  The request method indicates the method to be performed on the resource identified by the given Request-URI. 
+Request-URI:
+  The Request-URI is a Uniform Resource Identifier and identifies the resource upon which to apply the request
+
+HTTP Response :
+
+Message Status-Line:
+ A Status-Line consists of the protocol version followed by a numeric status code and its associated textual phrase. The elements are separated by space SP characters.
+HTTP Version:
+ Contains the http version number
+Status Code:
+ Indicates the result of the request whether success,failure etc 
+
+
+9.What is Session State in HTTP?
+
+In client-server protocols, like HTTP, sessions consist of three phases:
+
+-The client establishes a TCP connection (or the appropriate connection if the transport layer is not TCP).
+-The client sends its request, and waits for the answer.
+-The server processes the request, sending back its answer, providing a status code and appropriate data.
+
+
+10.What is HTTPS?
+
+-HTTPS stands for Hyper Text Transfer Protocol Secure. 
+-It is a protocol for securing the communication between two systems 
+-e.g. the browser and the web server.
+-HTTPS established an encrypted link between the browser and the web server using the Secure Socket Layer (SSL) or Transport Layer Security (TLS) protocols and ensuring safety while sending data
+
+
+
+ 
+Introduction to API
+ ----------------
+ 
+ 
+1.Explain REST and RESTFUL?
+
+REST :
+-REST is acronym for REpresentational State Transfer.
+-It is a style of software architecture.
+-The Rest Service is simple to use 
+-it uses HTTP protocol for all opeartions.
+-It is lightweight and faster
+-It use the .JSON and .XML formats
+
+RESTFUL :
+-RestFULL(Representational State Transfer)is a style of software architecture.
+-It uses the Complex Mechanisim like SOAP for Communication.
+-RESTFUL services is referred for web services written by applying REST architectural concept.
+-It focuses on system resources and how state of resource should be transported over HTTP protocol to a different clients written in different language.
+
+
+2.Mention what are the HTTP methods supported by REST?
+
+GET - The GET method retrieves specific information from the server as identified by the request URI.
+PUT - The PUT method requests that the message body sent with the request be stored under the location provided in the HTTP message.
+DELETE - The DELETE method deletes the specified resources.
+POST - The POST method modifies data on the server from which a request was sent.
+HEAD - The HEAD method is similar to the GET method except the message body is not returned in the response. The response only includes meta information, such as a response code or corresponding headers.
+
+
+3.Explain the architectural style for creating web API?
+
+REST :
+-Obviously this is for a RESTful API. 
+-We are not adhering strictly to Fielding’s definition of REST but, simply talking about APIs that use HTTP methods to facilitate communication between a client and server.
+
+RPC (Remote Procedure Call) :
+-This is for Web services related APIs that typically involve SOAP and XML-RPC but we've seen others. 
+-It is used when an API calls a known procedure on the Web service other than using the supporting protocol's built in verbs.
+
+Native/Browser :
+-This is for APIs that are accessible on the local system, runtime, or OS APIs that are mashable into Web and mobile apps. 
+-For example, Javascript APIs found in the Web browser or a device specific API like one for the accelerometer in a smartphone.
+
+Push/Streaming :
+-This is for realtime APIs where data is streamed back to the calling system using a technology like Websockets or Webhooks.
+
+Indirect :
+-This is used when an API is only accessible indirectly through an SDK. 
+-An example is the Evernote API that is only made accessible via the various language SDKs. 
+-The reason we create this sort of "stub" entry for an API that technically doesn't exist is so that it's easy for audience members to find their way to the SDKs, if they exist.
+
+GraphQL :
+-This is a somewhat newer API technology that we just recently added to our list of architectural styles. 
+-GraphQL APIs have a hypermedia-like ability to use a single query to fetch the required data across multiple resources. 
+-But GraphQL APIs also borrow from concepts that we’ve observed in both REST and RPC-styled APIs. As we say here at ProgrammableWeb, it’s neither fish-nor-fowl. 
+-As such, we’ve established a separate architectural style just for GraphQL.
+
+
+4.Explain the RESTFul Web Service?
+
+-RESTful web services are lightweight, highly scalable and maintainable and are very commonly used to create APIs for web-based applications.
+-These web services use HTTP methods to implement the concept of REST architecture.
+-A RESTful web service usually defines a URI, Uniform Resource Identifier a service, provides resource representation such as JSON and set of HTTP Methods.
+
+
+5.Explain what is a “Resource” in REST?
+
+-The key abstraction of information in REST is a resource. 
+-Any information that can be named can be a resource: a document or image, a temporal service , a collection of other resources, a non-virtual object , and so on. 
+-In other words, any concept that might be the target of an author’s hypertext reference must fit within the definition of a resource. 
+-A resource is a conceptual mapping to a set of entities, not the entity that corresponds to the mapping at any particular point in time.
+
+
+
+6.Which protocol is used by RESTful web services?
+
+-HTTP is the protocol used in RESTful web services.
+
+
+7.What is messaging in RESTful web services?
+
+-RESTful Web Services make use of HTTP protocols as a medium of communication between client and server. 
+-A client sends a message in form of a HTTP Request and the server responds in the form of an HTTP Response. 
+-This technique is termed as Messaging. 
+-These messages contain message data and metadata i.e. information about message itself. 
+
+
+8.State the core components of an HTTP Request?
+
+An HTTP Request has five major parts :
+-Verb − Indicates the HTTP methods such as GET, POST, DELETE, PUT, etc.
+-URI − Uniform Resource Identifier (URI) to identify the resource on the server.
+-HTTP Version − Indicates the HTTP version. For example, HTTP v1.1.
+-Request Header − Contains metadata for the HTTP Request message as key-value pairs. For example, client (or browser) type, format supported by the client, format of the message body, cache settings, etc.
+-Request Body − Message content or Resource representation.
+
+
+9.State the core components of an HTTP response?
+
+An HTTP Response has four major parts :
+Status/Response Code − Indicates the Server status for the requested resource. For example, 404 means resource not found and 200 means response is ok.
+HTTP Version − Indicates the HTTP version. For example HTTP v1.1.
+Response Header − Contains metadata for the HTTP Response message as key value pairs. For example, content length, content type, response date, server type, etc.
+Response Body − Response message content or Resource representation.
+
+
+10.What do you understand about payload in RESTFul web service?
+
+-The payload is the part of that response that is communicating directly to you. 
+-In REST APIs this is usually some JSON formatted data.
+
+
+11.Explain the caching mechanism?
+
+-Caching refers to storing the server response in the client itself, so that a client need not make a server request for the same resource again and again.
+-When a consumer requests a resource representation, the request goes through a cache or a series of caches toward the service hosting the resource.
+-If any of the caches along the request path has a fresh copy of the requested representation, it uses that copy to satisfy the request.
+
+
+12.List the main differences between SOAP and REST?
+
+SOAP :
+-Simple Object Access Protocol 
+–defines a very strongly typed messaging framework that relies heavily on XML and schemas. 
+
+REST :
+-REpresentational State Transfer 
+–is an architectural style that makes use of existing and widely adopted technologies, specifically HTTP, and does not create any new standards. 
+
+
+13.Enlist advantages and disadvantages of ‘Statelessness’.
+
+Advantages :
+-Web services can treat each method request independently.
+-Web services need not maintain the client's previous interactions. It simplifies the application design.
+-As HTTP is itself a statelessness protocol, RESTful Web Services work seamlessly with the HTTP protocols.
+
+Disadvantages :
+-Web services need to get extra information in each request and then interpret to get the client's state in case the client interactions are to be taken care of.
+
+
+
+Object Oriented Programming Fundamentals
+-------------------------------------
+
+1.What is the main difference between a class and an object?
+
+- An object is the instance of the class, which helps programmers to use variables and methods from inside the class.
+- A class is a blueprint from which you can create the instance, i.e., objects.	
+
+- Object is created through new keyword 
+- Class is declared using class keyword
+
+- Object allocates memory when it is created.	
+- Class doesn't allocated memory when it is created.
+
+
+2.What is Encapsulation? Explain with a used case
+
+-  The binding of data and functions into a single unit is called encapsulation.
+-  An example is variables and functions encapsulated into a single unit as class.	
+-  School bag is one of the most real examples of Encapsulation. School bag can keep our books, pens, etc.
+
+
+3.What is Polymorphism? Explain with a used case
+
+- Polymorphism is the ability of an object to take on many forms.
+
+- There are two types of polymorphism in Java: compile-time polymorphism and runtime polymorphism. 
+	We can perform polymorphism in java by method overloading and method overriding.
+	
+- Suppose if we are in class room that time we behave like a student, when we are in market at that time we behave like a customer, 
+  when we at your home at that time we behave like a son or daughter, Here one person present in different-different behaviors.
+
+
+4.Explain Overriding & Overloading and its advantages
+
+- Overriding means having two methods with the same method name and parameters (i.e., method signature). 
+  One of the methods is in the parent class and the other is in the child class. 
+  Overriding allows a child class to provide a specific implementation of a method that is already provided its parent class.
+
+- Overloading advantages
+	-The main advantage of this is cleanlinessof code.
+	-Overloaded methods give programmers theflexibility to call a similar method for different types of data.
+
+- Overriding advantages
+	-The main advantage of method overriding is that the class can give its own specific implementation to a inherited method without even modifying the parent class code.
+
+
+5.What is Inheritance and different types of inheritance? Explain with a used case
+
+- Inheritance can be defined as the process where one class acquires the properties (methods and fields) of another. 
+  With the use of inheritance the information is made manageable in a hierarchical order.
+  
+- The class which inherits the properties of other is known as subclass
+  the class whose properties are inherited is known as superclass
+
+- Different types are:
+	Single Inheritance : In single inheritance, subclasses inherit the features of one superclass.
+	
+	Multilevel Inheritance : In Multilevel Inheritance, a derived class will be inheriting a base class and as well as the derived class also act as the base class to other class
+	
+	Hierarchical Inheritance : In Hierarchical Inheritance, one class serves as a superclass for more than one sub class
+	
+-eg: 	we have a base class Teacher and a sub class PhysicsTeacher. Since class PhysicsTeacher extends the designation and college properties and 
+		work() method from base class, we need not to declare these properties and method in sub class.
+		Here we have collegeName, designation and work() method which are common to all the teachers so we have declared them in the base class, 
+		this way the child classes like MathTeacher, MusicTeacher and PhysicsTeacher do not need to write this code and can be used directly from base class.	
+
+
+6.What is an abstract class?
+
+- abstraction is a process of hiding the implementation details from the user, only the functionality will be provided to the user. 
+	In other words, the user will have the information on what the object does instead of how it does it.
+	
+- In Java, abstraction is achieved using Abstract classes and interfaces.
+
+- A class which contains the abstract keyword in its declaration is known as abstract class. 
+
+
+7.What is an interface and how multiple inheritance is achieved with this?
+
+-multiple inheritance is not supported in the case of class because of ambiguity.
+-interface is used to achieve abstraction and multiple inheritance in Java.
+-It can be used to achieve loose coupling.
+-It is declared by using the 'interface' keyword.
+
+
+8.What are the access modifiers?
+
+- The access modifiers in Java specifies the accessibility or scope of a field, method, constructor, or class.
+
+- There are four types of Java access modifiers:
+	
+	->Private: The access level of a private modifier is only within the class.
+	
+	->Default: The access level of a default modifier is only within the package. If you do not specify any access level, it will be the default.
+	
+	->Protected: The access level of a protected modifier is within the package and outside the package through child class. 
+			   If you do not make the child class, it cannot be accessed from outside the package.
+			   
+	->Public: The access level of a public modifier is everywhere
+	
+	
+9.What are the various types of constructors?
+
+- A constructor in Java is a special method that is used to initialize objects. 
+	The constructor is called when an object of a class is created. It can be used to set initial values for object attributes.
+	
+-  Different types are:
+
+		Default constructor: A constructor that has no parameter is known as default constructor. 
+							If we don’t define a constructor in a class, then compiler creates default constructor(with no arguments) for the class.
+							
+		Parameterized Constructor: A constructor that has parameters is known as parameterized constructor. 
+								  If we want to initialize fields of the class with your own values, then use a parameterized constructor.					
+								
+
+10.What is ‘this’ pointer?
+
+- In java, this is a reference variable that refers to the current object.
+- this can be used to refer current class instance variable.
+-this can be passed as an argument in the method call.
+-this can be passed as argument in the constructor call.
+
+
+11.What is static and dynamic Binding?
+
+- Connecting a method call to the method body is known as binding.
+- When type of the object is determined at compiled time(by the compiler), it is known as static binding.
+  If there is any private, final or static method in a class, there is static binding.
+- When type of the object is determined at run-time, it is known as dynamic binding.
+
+   	
+12.How many instances can be created for an abstract class and why?
+
+- An abstract class cannot have instances.
+-An abstarct calss is not completely implemented
+-to use this abstract create another class which extends this abstract class.
+-abstract classes are used when mathods in parent class need not be implemented
+
+
+13.Which OOPS concept is used as a reuse mechanism and explain with a use case
+
+- Inheritance is the OOPS concept that can be used as reuse mechanism.
+
+- -eg: 	we have a base class Teacher and a sub class PhysicsTeacher. Since class PhysicsTeacher extends the designation and college properties and 
+		work() method from base class, we need not to declare these properties and method in sub class.
+		Here we have collegeName, designation and work() method which are common to all the teachers so we have declared them in the base class, 
+		this way the child classes like MathTeacher, MusicTeacher and PhysicsTeacher do not need to write this code and can be used directly from base class.	
+		
+- This is the use case.	
+
+
+14.Please identify one practical scenario for each pillar of OOPs.
+
+- inheritance: The real life example of inheritance is child and parents, all the properties of father are inherited by his son.
+
+- abstraction: real life example of Abstraction is ATM Machine; All are performing operations on the ATM machine like cash withdrawal, money transfer, retrieve mini-statement…etc. but we can't know internal details about ATM.
+ 
+- encapsulation: School bag is one of the most real examples of Encapsulation. School bag can keep our books, pens, etc. i.e combining everything(data and functions) into one.
+
+- polymorphism:  Suppose if we are in class room that time we behave like a student, when we are in market at that time we behave like a customer, 
+				 when we at your home at that time we behave like a son or daughter, Here one person present in different-different behaviors.
+ 
+ 
