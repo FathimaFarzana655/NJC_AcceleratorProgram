@@ -1,0 +1,21 @@
+http:
+  port : "8081" 
+  
+american:
+  host: "4-american-ws-fathima-proxy.us-e2.cloudhub.io"
+  port: "80"
+  basePath: "/"
+  protocol: "HTTP"
+  client_id: "593fcdf899dc407b96dee279e8fdec49"
+  client_secret: "B55D29140502447783F256bcaE32ec12"
+  
+training:
+  host: "mu.learn.mulesoft.com"
+  port: "80"
+  basepath: "/"
+  protocol: "HTTP"
+  
+delta:
+  wsdl: "http://mu.learn.mulesoft.com/delta?wsdl"
+  service: "TicketServiceService"
+  port: "TicketServicePort"
