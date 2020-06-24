@@ -1,0 +1,14 @@
+{
+  "sampleData": {
+    "1a9ce2ca-5753-4380-8c5b-a0940be1a18e": {
+      "payload": "sample_data/unknown.dwl"
+    },
+    "aec4975f-675b-45a8-8cf0-e474ad0f34e4": {
+      "vars-accountdata": "sample_data/unknown.json"
+    },
+    "0b9596c6-7819-4f55-a01b-83b30a16db16": {
+      "vars-accountSize": "sample_data/defaultstringtype.json",
+      "vars-accountdata": "sample_data/unknown_1.json"
+    }
+  }
+}
