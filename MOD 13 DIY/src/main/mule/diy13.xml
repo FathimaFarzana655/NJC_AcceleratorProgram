@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
+	xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="664de3ea-a5a6-49bc-861f-2722640e6d72" >
+		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}"/>
+	</db:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="2c08bb63-3627-4b7e-96e0-6979661741a6" file="dev-properties.yaml" />
+	<vm:config name="VM_Config" doc:name="VM Config" doc:id="a5136a07-38f5-4673-b775-fc7df68abef4" >
+		<vm:connection />
+		<vm:queues >
+			<vm:queue queueName="validate" />
+		</vm:queues>
+	</vm:config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="a235614f-5518-445b-9b15-d7f0cc0fa64b" >
+		<file:connection workingDir="C:\FATHIMA FARZANA\study resources\MUFundamentals4.3_DIYexercises_22may2020\files\module13\OUTPUT" />
+	</file:config>
+	<flow name="diy13Flow" doc:id="d2d83e32-aa54-4d69-8c26-ea6bb089ade6" initialState="started">
+		<scheduler doc:name="Scheduler" doc:id="9d8fe87e-be6e-455e-910d-5101af1a2f25" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="5000"/>
+			</scheduling-strategy>
+		</scheduler>
+		<os:retrieve doc:name="Retrieve" doc:id="7b07c74e-4719-4e9e-b601-42c75fa35c3f" key="id" target="transid">
+			<os:default-value ><![CDATA[0]]></os:default-value>
+		</os:retrieve>
+		<db:select doc:name="Select" doc:id="885d4323-4635-4444-a76a-2be0adbb8f73" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from flights_transactions where transactionID>:id limit 10]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"id" : vars.transid
+}]]]></db:input-parameters>
+		</db:select>
+		<os:store doc:name="Store" doc:id="daa9912e-7fa0-4be0-b5f1-1d254c044fea" key="id" failOnNullValue="false">
+			<os:value ><![CDATA[#[max(payload.*transactionID)]]]></os:value>
+		</os:store>
+		<logger level="INFO" doc:name="Logger" doc:id="c6980745-8eff-408e-be89-66d4be1eeed3" message="#[payload]"/>
+		<batch:job jobName="validationBatch" doc:id="b0588506-0b57-4bb8-9b88-9c72a8c5211a" >
+			<batch:process-records >
+				<batch:step name="Batch_Step" doc:id="06018af6-dfdb-4ac3-9449-d1de95061dfc" >
+					<logger level="INFO" doc:name="Logger" doc:id="2b3fa2a7-cea4-461b-bed2-1df284580392" message="Inside batch step 1"/>
+					<vm:publish-consume doc:name="Publish consume" doc:id="0fae1df1-b28c-4cef-bb68-3d180a74c781" config-ref="VM_Config" target="valid" queueName="validate" timeout="3000"/>
+					<logger level="INFO" doc:name="Logger" doc:id="5d74cf7d-6d40-4673-a2ba-a3104d4691a8" message="#[payload]"/>
+				</batch:step>
+				<batch:step name="Batch_Step2" doc:id="f8457587-bf38-4dc6-b60c-7dcea934cd83" acceptExpression="#[vars.valid default false]">
+					<batch:aggregator doc:name="Batch Aggregator" doc:id="eee25f71-86a0-434c-8069-68d1a715bb24" size="50">
+						<file:write doc:name="Write" doc:id="70e6a7ed-11a0-415f-b748-4e4e7b55de1f" config-ref="File_Config" path='C:\FATHIMA FARZANA\study resources\MUFundamentals4.3_DIYexercises_22may2020\files\module13\OUTPUT\sample.csv' mode="APPEND">
+							<file:content ><![CDATA[#[output application/csv
+---
+payload]]]></file:content>
+						</file:write>
+					</batch:aggregator>
+				</batch:step>
+			</batch:process-records>
+			<batch:on-complete >
+				<logger level="INFO" doc:name="Logger" doc:id="d452f24b-1cee-4c4d-ad50-9f9b7af36a28" message="On Complete!!!"/>
+			</batch:on-complete>
+		</batch:job>
+		<logger level="INFO" doc:name="Logger" doc:id="4b4b5635-c455-4856-9374-0ec2fed87564" message="last logger"/>
+	</flow>
+	<flow name="validateflow" doc:id="ebda245e-dd89-4c65-afb1-2108a1ebcbe9" >
+		<vm:listener queueName="validate" doc:name="Listener" doc:id="c31bcb11-c8e0-4363-b56b-d15d6f5ced9b" config-ref="VM_Config" timeout="3000"/>
+		<ee:transform doc:name="Transform Message" doc:id="ca439064-6d04-401d-bb33-dfa5d1f1f57b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+if(mod(payload.transactionID as Number,4) == 0) 
+	true 
+else 
+	false]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
