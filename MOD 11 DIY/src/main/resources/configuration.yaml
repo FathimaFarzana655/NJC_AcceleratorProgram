@@ -1,0 +1,8 @@
+http.port: "8081"
+
+united.host: "mu.mulesoft-training.com"
+
+accounts:
+  host: "apdev-accounts-ws.cloudhub.io"
+  port: "80"
+  basePath: "/api"
