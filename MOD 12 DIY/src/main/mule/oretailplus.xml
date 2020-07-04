@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<flow name="oretailplus" doc:id="6261394e-cabc-4254-b48d-83ee22a3b1ca" >
+		<jms:listener doc:name="Listener" doc:id="0810de3c-bdc5-4487-8ecc-40fc88c405fd" config-ref="JMS_Config" destination="${partner3.queue}">
+			<jms:consumer-type >
+				<jms:queue-consumer />
+			</jms:consumer-type>
+		</jms:listener>
+		<file:write doc:name="Write" doc:id="c81e0b3a-f26f-4482-a16e-dc11093898d9" config-ref="File_Config" path="#[&quot;MULEBANK&quot; ++ p('partner3.name') ++ attributes.properties.userProperties.creationDate ++ attributes.properties.userProperties.count ++ &quot;.csv&quot;]"/>
+		<set-payload value='#["Status" : "Success"]' doc:name="Set Payload" doc:id="7dc8e00e-7448-4f3a-a3e9-c83fe3665e42" />
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a10a8ead-a385-4794-90ba-53435e3c7fac" type="ANY">
+				<set-payload value='#["Status" : "Failed"]' doc:name="Set Payload" doc:id="49b55b3f-7039-44a1-914c-18dca5079395" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

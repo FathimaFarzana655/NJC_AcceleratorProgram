@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="6f7e7d7e-a5d2-4e37-a6bc-97b9a7b97a09" >
+		<file:connection workingDir="C:\FATHIMA FARZANA\study resources\MUFundamentals4.3_DIYexercises_22may2020\files\module12" />
+	</file:config>
+	<jms:config name="JMS_Config" doc:name="JMS Config" doc:id="19794998-9e6d-4b2c-8a1c-6136ce4e123a" >
+		<jms:active-mq-connection />
+	</jms:config>
+	<flow name="processVisaGiftCards" doc:id="3272220c-5155-4310-92a6-863b9caa1eff" >
+		<file:listener doc:name="On New or Updated File" doc:id="0417ea43-0f06-4b6c-ab7c-43cdd7a01583" config-ref="File_Config" directory="C:\FATHIMA FARZANA\study resources\MUFundamentals4.3_DIYexercises_22may2020\files\module12\INPUT" moveToDirectory="C:\FATHIMA FARZANA\study resources\MUFundamentals4.3_DIYexercises_22may2020\files\module12\OUTPUT" autoDelete="true">
+			<scheduling-strategy >
+				<fixed-frequency frequency="3000" />
+			</scheduling-strategy>
+		</file:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="0c8e681b-21ef-455f-b3fe-d7ef24faa7b8" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="4f626af2-ae42-456c-8e79-2dcdc0276f88" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-variable value="#[sizeOf(payload)]" doc:name="count" doc:id="2a7144d2-dae5-47e1-83be-78efcac26440" variableName="count" />
+		<set-variable value="#[payload[0].partner]" doc:name="partner" doc:id="0a04e98a-aeeb-49cd-aaa6-7196fc7c6226" variableName="partner"/>
+		<choice doc:name="Choice" doc:id="0c832a3b-50c3-4683-8b2a-97bdc669d04b" >
+			<when expression="#[vars.partner == p('partner1.name')]">
+				<ee:transform doc:name="Transform Message" doc:id="250bf306-dfe5-4876-baec-6a917857a73c">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map((item,index)->{
+	"number" : item.card_no,
+	"createdOn" : now() as String {format: "yyyy-MM-dd HH:mm:ss"},
+	"balance" : item.amount_granted,
+	"sourceID" : "MULEBANK-0949"	
+}
+)	
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				<jms:publish-consume doc:name="Publish consume" doc:id="ff3fcda2-7e09-48db-8005-e1dbc086963f" config-ref="JMS_Config" requestReplyPattern="NONE" destination="${partner1.queue}">
+					<jms:publish-configuration timeToLive="30000" timeToLiveUnit="MILLISECONDS" />
+					<jms:consume-configuration maximumWait="30000" />
+				</jms:publish-consume>
+			</when>
+			<when expression="#[vars.partner == p('partner2.name')]">
+				<ee:transform doc:name="Transform Message" doc:id="7dda610f-f220-43e7-8f07-cbc4c2049c00">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map((item,index)->{
+	"card_no" : item.gc_card_number,
+	"amount_granted" : item.gc_balance,
+	"origin" : "MULEBANK-0949",
+	"card_type" : "VISA",
+	"expiration" : (now() + |P2M|) as Number
+	}
+)]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[now() as Number]" doc:name="creationDate" doc:id="d1362623-3a16-47b4-8011-eddb40ed199c" variableName="creationDate" />
+				<jms:publish-consume doc:name="Publish consume" doc:id="d825340d-9419-482c-b993-7cb8d619e6cd" config-ref="JMS_Config" destination="${partner2.queue}">
+					<jms:message >
+						<jms:properties ><![CDATA[#[{
+	"creationDate" : vars.creationDate
+}]]]></jms:properties>
+					</jms:message>
+				</jms:publish-consume>
+			</when>
+			<when expression="#[vars.partner == p('partner3.name')]">
+				<ee:transform doc:name="Transform Message" doc:id="07bcf251-4172-4e04-aa04-ad66b6988ca5" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map((item,index)->{
+	"card_no" : item.cardNo,
+	"amount_granted" : item.amount,
+	"bankOriginationID" : "MULEBANK-0949"
+}
+)]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<set-variable value="#[now() as Number]" doc:name="creationDate" doc:id="1b77c278-88ad-4e39-bef4-200c325b9d23" variableName="creationDate"/>
+				<jms:publish-consume doc:name="Publish consume" doc:id="74cc41f0-a389-44fd-81d9-2b48e0c38f83" destination="${partner3.queue}" config-ref="JMS_Config">
+					<jms:message >
+						<jms:properties ><![CDATA[#[{
+	"count" : vars.count,
+	"creationDate" : vars.creationDate
+}]]]></jms:properties>
+					</jms:message>
+				</jms:publish-consume>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="Logger" doc:id="93dbfa48-dc19-4ac3-8812-96176f7f05b7" message="#[payload]"/>
+				<file:write doc:name="Write" doc:id="73cafed5-0b3e-406c-80db-17e7349e0acb" config-ref="File_Config" path='#["invalid-" ++ vars.partner ++ ".csv"]'>
+					<file:content ><![CDATA[#[output text/plain --- "Partner: " ++ vars.partner ++ ".  Not transferring the file."]]]></file:content>
+				</file:write>
+			</otherwise>
+		</choice>
+		<set-payload value='#["Processed " ++ vars.count ++ " cards for " ++ vars.partner ++ " with Status: " ++ payload.Status]' doc:name="Set Payload" doc:id="cdafc992-1f2c-4fd0-a3a0-275a108fbb2d" />
+	</flow>
+</mule>

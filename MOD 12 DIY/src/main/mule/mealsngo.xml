@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<flow name="mealsngoFlow" doc:id="5d4ee4a4-03fa-489a-aad2-aadc7c5a9d13" >
+		<jms:listener doc:name="Listener" doc:id="03f9c524-6bc5-497d-b774-4ffedf929d32" destination="${partner2.queue}">
+		</jms:listener>
+		<ftp:write doc:name="Write" doc:id="f2814b34-f2e4-4d16-b97e-5692ebfe89dd" config-ref="Partner2_FTP_Config" path="#['MULEBANK-gc-' ++ attributes.properties.userProperties.creationDate ++ '.csv']">
+			<ftp:content ><![CDATA[#[output application/csv --- payload]]]></ftp:content>
+		</ftp:write>
+		<set-payload value='#["Status" : "Success"]' doc:name="Set Payload" doc:id="df24aca8-cedf-4546-b00d-2d3e15b85698" />
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="5087b15a-e6a2-43b8-9331-26ac227f1183" type="ANY">
+				<set-payload value='#["Status" : "Failed"]' doc:name="Set Payload" doc:id="9c20d4cf-3b94-4add-b3a5-e8c95c57fd2f" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>
