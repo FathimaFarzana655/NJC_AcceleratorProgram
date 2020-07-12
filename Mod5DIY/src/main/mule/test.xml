@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="d79f6972-50c1-447a-ac76-dd7eba8e7e6e" basePath="/api" >
+		<http:request-connection host="localhost" port="8081" />
+	</http:request-config>
+	<flow name="test_getAccount" doc:id="150cfc8d-abaa-4edc-bec7-6ffb8b93c23f" >
+		<http:listener doc:name="/getAccounts" doc:id="005f1e1d-f56a-4aab-a230-d5227fc75692" config-ref="accounts-api-httpListenerConfig" path="/getAccounts" allowedMethods="GET" />
+		<http:request method="GET" doc:name="get/accounts" doc:id="a02296ad-e917-4fa9-ae50-34326292bd12" config-ref="HTTP_Request_configuration" path="/accounts" responseTimeout="300000" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Requester-ID" : "testHeader"
+}]]]></http:headers>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"type" : "business"
+}]]]></http:query-params>
+		</http:request>
+	</flow>
+	<flow name="test_getAccountId" doc:id="0e8e4078-80c0-4035-9d2c-e61c396eac88" >
+		<http:listener doc:name="/getAccountsId" doc:id="005dcdc8-3e1d-4d9f-bdb7-af7773f1228d" config-ref="accounts-api-httpListenerConfig" path="/getAccountsId" allowedMethods="GET" />
+		<http:request method="GET" doc:name="get/accountsId" doc:id="ab33022d-41d0-46fe-b778-7149b5e55fff" config-ref="HTTP_Request_configuration" path="/accounts/{id}" responseTimeout="300000" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Requester-ID" : "testHeader"
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"id" : "4400"
+}]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"type" : "business"
+}]]]></http:query-params>
+		</http:request>
+	</flow>
+	<flow name="test_postAccount" doc:id="bc33ac43-5552-46a1-a121-e024886de1e8" >
+		<http:listener doc:name="/postAccounts" doc:id="7c9d3f25-7021-48f2-94bc-33918931d1b0" config-ref="accounts-api-httpListenerConfig" path="/postAccounts" allowedMethods="GET" />
+		<ee:transform doc:name="Transform Message" doc:id="32b84455-fbd5-4caa-a147-1104fcd67f3a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+  {
+    "id": "4401",
+    "firstName": "Mat",
+    "secondName": "Siva",
+    "address": "12345 Green, Colorado",
+    "postal": "82433",
+    "country": "USA",
+    "creationDate": "2017-10-22T04:24:36",
+    "type": "business",
+    "miles": 119093
+  }
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="post/accounts" doc:id="b299e720-e78c-4914-a6ca-6f9beb431820" config-ref="HTTP_Request_configuration" path="/accounts" responseTimeout="300000" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Requester-ID" : "testHeader"
+}]]]></http:headers>
+		</http:request>
+	</flow>
+	<flow name="test_putAccountId" doc:id="5169ee7f-840a-4427-b5be-59dd0e66cb5a" >
+		<http:listener doc:name="/putAccountsId" doc:id="406ace39-236e-4387-b1c5-d9b2efd78ef3" config-ref="accounts-api-httpListenerConfig" path="/putAccountsId" allowedMethods="GET" />
+		<http:request method="PUT" doc:name="put/accountsId" doc:id="db3810d3-9657-4b03-80a2-06acacf99d0e" config-ref="HTTP_Request_configuration" path="/accounts/{id}" responseTimeout="300000" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Requester-ID" : "testHeader"
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"id" : "4400"
+}]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"type" : "business"
+}]]]></http:query-params>
+		</http:request>
+	</flow>
+	<flow name="test_patchAccountId" doc:id="4267311f-93a8-47e3-b511-1cc717364d0d" >
+		<http:listener doc:name="/patchAccountsId" doc:id="8d3c19c2-bce3-4c50-9299-96aa0729afa6" config-ref="accounts-api-httpListenerConfig" path="/patchAccountsId" allowedMethods="GET" />
+		<http:request method="PATCH" doc:name="patch/accountsId" doc:id="18f742b9-c7e1-4b10-9cac-5913be1a7ba8" config-ref="HTTP_Request_configuration" path="/accounts/{id}" responseTimeout="300000" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Requester-ID" : "testHeader"
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"id" : "4400"
+}]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"type" : "business"
+}]]]></http:query-params>
+		</http:request>
+	</flow>
+	<flow name="test_deleteAccountId" doc:id="a67c0b4f-9c69-4607-9a0d-4b9aa5e783ef" >
+		<http:listener doc:name="/deleteAccountsId" doc:id="f32c02ec-a84c-4174-b75e-94e48a1775f8" config-ref="accounts-api-httpListenerConfig" path="/deleteAccountsId" allowedMethods="GET" />
+		<http:request method="DELETE" doc:name="delete/accountsId" doc:id="5f0ec099-6422-4678-b32e-439055bf69d6" config-ref="HTTP_Request_configuration" path="/accounts/{id}" responseTimeout="300000" >
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Requester-ID" : "testHeader"
+}]]]></http:headers>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"id" : "4400"
+}]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"type" : "business"
+}]]]></http:query-params>
+		</http:request>
+	</flow>
+</mule>
